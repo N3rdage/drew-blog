@@ -1,49 +1,127 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION, SOCIAL_LINKS } from '../consts';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <style>
+      .hero {
+        padding: 3rem 0 2rem;
+        border-bottom: 1px solid #e5e7eb;
+        margin-bottom: 2.5rem;
+      }
+      .hero h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem;
+      }
+      .hero .tagline {
+        color: #6b7280;
+        font-size: 1rem;
+        margin: 0 0 1.25rem;
+        line-height: 1.6;
+      }
+      .hero-links {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .hero-links a {
+        font-size: 0.875rem;
+        color: #2563eb;
+        text-decoration: none;
+        border: 1px solid #bfdbfe;
+        border-radius: 6px;
+        padding: 4px 12px;
+        transition: background 0.15s;
+      }
+      .hero-links a:hover {
+        background: #eff6ff;
+      }
+      .posts-heading {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 0 0 1.25rem;
+        color: #111827;
+      }
+      ul.post-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+      ul.post-list li a {
+        text-decoration: none;
+        display: block;
+        padding: 1rem 1.25rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        transition: border-color 0.15s, box-shadow 0.15s;
+      }
+      ul.post-list li a:hover {
+        border-color: #93c5fd;
+        box-shadow: 0 1px 4px rgba(37,99,235,0.08);
+      }
+      ul.post-list .post-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #111827;
+        margin: 0 0 0.25rem;
+      }
+      ul.post-list .post-date {
+        font-size: 0.8rem;
+        color: #9ca3af;
+        margin: 0 0 0.4rem;
+      }
+      ul.post-list .post-desc {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin: 0;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <div class="hero">
+        <h1>Andrew O'Hare</h1>
+        <p class="tagline">
+          Principal Engineer · Solution Architect · SaMD specialist<br />
+          Melbourne, VIC — writing about engineering, regulated software, and building with AI agents.
+        </p>
+        <div class="hero-links">
+          <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+          <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+
+      <p class="posts-heading">Writing</p>
+      <ul class="post-list">
+        {posts.map((post) => (
+          <li>
+            <a href={`/blog/${post.id}/`}>
+              <p class="post-title">{post.data.title}</p>
+              <p class="post-date"><FormattedDate date={post.data.pubDate} /></p>
+              <p class="post-desc">{post.data.description}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </main>
+    <Footer />
+  </body>
 </html>

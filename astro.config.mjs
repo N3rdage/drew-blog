@@ -2,12 +2,26 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import { unified } from '@astrojs/markdown-remark';
 import { defineConfig, fontProviders } from 'astro/config';
+import remarkDirective from 'remark-directive';
+import { remarkCallouts } from './src/plugins/remark-callouts.mjs';
+import { rehypeExternalLinks } from './src/plugins/rehype-external-links.mjs';
 
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://silly.ninja',
 	integrations: [mdx(), sitemap()],
+	// remark-directive enables `:::note` / `:::aside` blocks; remarkCallouts
+	// turns them into styled .callout boxes (see src/plugins + global.css).
+	// Astro 6's pluggable processor form (the non-deprecated path); mdx()
+	// inherits it via extendMarkdownConfig.
+	markdown: {
+		processor: unified({
+			remarkPlugins: [remarkDirective, remarkCallouts],
+			rehypePlugins: [rehypeExternalLinks],
+		}),
+	},
 	fonts: [
 		{
 			provider: fontProviders.local(),

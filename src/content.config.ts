@@ -14,6 +14,9 @@ const blog = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.optional(image()),
+			// Alt text for the hero. Omit to default to the title (good for
+			// image SEO); set to "" to mark a purely decorative hero.
+			heroAlt: z.string().optional(),
 		}),
 });
 

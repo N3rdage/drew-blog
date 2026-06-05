@@ -2,7 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION, SOCIAL_LINKS } from '../consts';
+import { SITE_TITLE, AUTHOR_NAME, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
 
@@ -14,46 +14,39 @@ const posts = (await getCollection('blog')).sort(
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead title={`${AUTHOR_NAME} — ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
     <style>
       .hero {
         padding: 3rem 0 2rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border);
         margin-bottom: 2.5rem;
       }
       .hero h1 {
-        font-size: 2rem;
+        font-size: 2.4rem;
         font-weight: 700;
         margin: 0 0 0.5rem;
+        background: linear-gradient(120deg, var(--accent), var(--accent-3));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .hero .byline {
+        color: var(--text);
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0 0 0.75rem;
       }
       .hero .tagline {
-        color: #6b7280;
+        color: var(--text-muted);
         font-size: 1rem;
         margin: 0 0 1.25rem;
         line-height: 1.6;
-      }
-      .hero-links {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-      .hero-links a {
-        font-size: 0.875rem;
-        color: #2563eb;
-        text-decoration: none;
-        border: 1px solid #bfdbfe;
-        border-radius: 6px;
-        padding: 4px 12px;
-        transition: background 0.15s;
-      }
-      .hero-links a:hover {
-        background: #eff6ff;
       }
       .posts-heading {
         font-size: 1.125rem;
         font-weight: 600;
         margin: 0 0 1.25rem;
-        color: #111827;
+        color: var(--heading);
       }
       ul.post-list {
         list-style: none;
@@ -67,28 +60,30 @@ const posts = (await getCollection('blog')).sort(
         text-decoration: none;
         display: block;
         padding: 1rem 1.25rem;
-        border: 1px solid #e5e7eb;
+        background: var(--surface);
+        border: 1px solid var(--border);
         border-radius: 10px;
-        transition: border-color 0.15s, box-shadow 0.15s;
+        transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
       }
       ul.post-list li a:hover {
-        border-color: #93c5fd;
-        box-shadow: 0 1px 4px rgba(37,99,235,0.08);
+        border-color: var(--accent);
+        box-shadow: var(--shadow);
+        transform: translateY(-2px);
       }
       ul.post-list .post-title {
-        font-size: 1rem;
+        font-size: 1.05rem;
         font-weight: 600;
-        color: #111827;
+        color: var(--heading);
         margin: 0 0 0.25rem;
       }
       ul.post-list .post-date {
         font-size: 0.8rem;
-        color: #9ca3af;
+        color: var(--accent-2);
         margin: 0 0 0.4rem;
       }
       ul.post-list .post-desc {
         font-size: 0.875rem;
-        color: #6b7280;
+        color: var(--text-muted);
         margin: 0;
         line-height: 1.5;
       }
@@ -98,15 +93,12 @@ const posts = (await getCollection('blog')).sort(
     <Header />
     <main>
       <div class="hero">
-        <h1>Andrew O'Hare</h1>
+        <h1>{SITE_TITLE}</h1>
+        <p class="byline">{AUTHOR_NAME} · Principal Engineer</p>
         <p class="tagline">
-          Principal Engineer · Solution Architect · SaMD specialist<br />
-          Melbourne, VIC — writing about engineering, regulated software, and building with AI agents.
+          Solution Architect · SaMD specialist · Melbourne, VIC<br />
+          Writing about engineering, regulated software, and building with AI agents.
         </p>
-        <div class="hero-links">
-          <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener">LinkedIn</a>
-          <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener">GitHub</a>
-        </div>
       </div>
 
       <p class="posts-heading">Writing</p>

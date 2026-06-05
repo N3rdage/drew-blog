@@ -8,12 +8,24 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, heroAlt } =
+	Astro.props;
+
+// Social cards need a raster image; SVG heroes fall back to the default.
+const ogImage =
+	heroImage && heroImage.format !== 'svg' ? heroImage : undefined;
 ---
 
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead
+			title={title}
+			description={description}
+			image={ogImage}
+			pubDate={pubDate}
+			updatedDate={updatedDate}
+			type="article"
+		/>
 		<style>
 			main {
 				width: calc(100% - 2em);
@@ -34,7 +46,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				max-width: calc(100% - 2em);
 				margin: auto;
 				padding: 1em;
-				color: rgb(var(--gray-dark));
+				color: var(--text);
 			}
 			.title {
 				margin-bottom: 1em;
@@ -47,7 +59,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			}
 			.date {
 				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
+				color: var(--accent-2);
 			}
 			.last-updated-on {
 				font-style: italic;
@@ -60,7 +72,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		<main>
 			<article>
 				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
+					{heroImage && <Image width={1020} height={510} src={heroImage} alt={heroAlt ?? title} />}
 				</div>
 				<div class="prose">
 					<div class="title">
@@ -82,5 +94,57 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			</article>
 		</main>
 		<Footer />
+
+		<script>
+			// Footnote hover/focus popovers — progressive enhancement.
+			// Without JS, footnote refs simply jump to the list at the bottom.
+			const refs = document.querySelectorAll('a[data-footnote-ref]');
+			if (refs.length) {
+				const pop = document.createElement('div');
+				pop.className = 'fn-popover';
+				pop.setAttribute('role', 'tooltip');
+				pop.hidden = true;
+				document.body.appendChild(pop);
+
+				let hideTimer: ReturnType<typeof setTimeout>;
+
+				const show = (ref: Element) => {
+					clearTimeout(hideTimer);
+					const href = ref.getAttribute('href') || '';
+					const li = document.getElementById(decodeURIComponent(href.slice(1)));
+					if (!li) return;
+					const clone = li.cloneNode(true) as HTMLElement;
+					clone
+						.querySelectorAll('[data-footnote-backref]')
+						.forEach((b) => b.remove());
+					pop.innerHTML = clone.innerHTML;
+					pop.hidden = false;
+
+					const r = ref.getBoundingClientRect();
+					pop.style.top = `${window.scrollY + r.bottom + 8}px`;
+					pop.style.left = `${window.scrollX + r.left}px`;
+					// nudge back in if it overflows the right edge
+					const overflow =
+						pop.getBoundingClientRect().right -
+						document.documentElement.clientWidth +
+						12;
+					if (overflow > 0) {
+						pop.style.left = `${window.scrollX + r.left - overflow}px`;
+					}
+				};
+				const scheduleHide = () => {
+					hideTimer = setTimeout(() => (pop.hidden = true), 150);
+				};
+
+				refs.forEach((ref) => {
+					ref.addEventListener('mouseenter', () => show(ref));
+					ref.addEventListener('mouseleave', scheduleHide);
+					ref.addEventListener('focus', () => show(ref));
+					ref.addEventListener('blur', () => (pop.hidden = true));
+				});
+				pop.addEventListener('mouseenter', () => clearTimeout(hideTimer));
+				pop.addEventListener('mouseleave', scheduleHide);
+			}
+		</script>
 	</body>
 </html>

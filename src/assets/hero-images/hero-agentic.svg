@@ -1,0 +1,132 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#160d33"/>
+      <stop offset="0.5" stop-color="#2a1259"/>
+      <stop offset="1" stop-color="#431967"/>
+    </linearGradient>
+    <radialGradient id="glowMag" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#d946ef" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#d946ef" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowTeal" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#2dd4bf" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="floor" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#7c3aed" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#334155"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="cloneHood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#4c1d95"/>
+    </linearGradient>
+    <linearGradient id="band" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f472b6"/>
+      <stop offset="1" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="term" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#111a2e"/>
+      <stop offset="1" stop-color="#0b1120"/>
+    </linearGradient>
+    <pattern id="dots" width="36" height="36" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="2" fill="#ffffff" opacity="0.05"/>
+    </pattern>
+
+    <!-- reusable shadow-clone ninja, drawn around local origin -->
+    <g id="clone">
+      <rect x="-36" y="6" width="72" height="62" rx="24" fill="url(#cloneHood)"/>
+      <circle cx="0" cy="-10" r="42" fill="url(#cloneHood)"/>
+      <rect x="-46" y="-28" width="92" height="12" rx="6" fill="#c084fc" transform="rotate(-6 0 -22)"/>
+      <ellipse cx="-15" cy="-6" rx="9" ry="11" fill="#ffffff"/>
+      <ellipse cx="15" cy="-6" rx="9" ry="11" fill="#ffffff"/>
+      <circle cx="-13" cy="-3" r="4.5" fill="#1e1b4b"/>
+      <circle cx="17" cy="-3" r="4.5" fill="#1e1b4b"/>
+    </g>
+  </defs>
+
+  <!-- background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <ellipse cx="1010" cy="120" rx="520" ry="420" fill="url(#glowMag)"/>
+  <ellipse cx="120" cy="560" rx="460" ry="380" fill="url(#glowTeal)"/>
+  <ellipse cx="600" cy="660" rx="620" ry="240" fill="url(#floor)"/>
+
+  <!-- faint background glyphs -->
+  <g fill="#ffffff" opacity="0.05" font-family="DejaVu Sans Mono, monospace" font-weight="bold">
+    <text x="60" y="210" font-size="150" transform="rotate(-10 60 210)">{</text>
+    <text x="1070" y="600" font-size="150" transform="rotate(8 1070 600)">}</text>
+    <text x="930" y="150" font-size="74">&lt;/&gt;</text>
+    <text x="1130" y="330" font-size="90">#</text>
+  </g>
+
+  <!-- terminal -->
+  <g>
+    <rect x="526" y="209" width="624" height="300" rx="20" fill="#000000" opacity="0.30"/>
+    <rect x="520" y="200" width="624" height="300" rx="20" fill="url(#term)" stroke="#334155" stroke-width="1.5"/>
+    <path d="M520,220 a20,20 0 0 1 20,-20 h584 a20,20 0 0 1 20,20 v26 h-624 z" fill="#1c2740"/>
+    <circle cx="548" cy="227" r="7" fill="#ff5f56"/>
+    <circle cx="572" cy="227" r="7" fill="#ffbd2e"/>
+    <circle cx="596" cy="227" r="7" fill="#27c93f"/>
+    <text x="624" y="233" font-family="DejaVu Sans Mono, monospace" font-size="16" fill="#94a3b8">what-now — agents</text>
+    <g font-family="DejaVu Sans Mono, monospace" font-size="21">
+      <text x="544" y="300"><tspan fill="#34d399">~/what-now $ </tspan><tspan fill="#e2e8f0">claude --agents 3</tspan></text>
+      <text x="544" y="338" fill="#fbbf24">» spawning shadow clones...</text>
+      <text x="544" y="376" fill="#67e8f9">» 3 agents typing furiously</text>
+      <text x="544" y="414" fill="#64748b" font-style="italic"># my job: drink tea, review the diff</text>
+      <text x="544" y="462"><tspan fill="#34d399">~/what-now $ </tspan></text>
+      <rect x="716" y="444" width="12" height="24" fill="#34d399"/>
+    </g>
+  </g>
+
+  <!-- shadow clones doing the work -->
+  <g opacity="0.55">
+    <use href="#clone" transform="translate(560 486) scale(0.92)"/>
+    <path d="M548,512 q-4,8 -14,10 M572,512 q4,8 14,10" stroke="#c084fc" stroke-width="5" stroke-linecap="round" fill="none"/>
+  </g>
+  <g opacity="0.5">
+    <use href="#clone" transform="translate(476 506) scale(0.78)"/>
+  </g>
+  <g opacity="0.6">
+    <use href="#clone" transform="translate(452 188) scale(0.66) rotate(-12)"/>
+    <path d="M420,150 q-12,-2 -20,-12 M430,138 q-8,-8 -10,-20" stroke="#c084fc" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.8"/>
+  </g>
+
+  <!-- main ninja: napping with tea -->
+  <g>
+    <ellipse cx="215" cy="540" rx="140" ry="24" fill="#000000" opacity="0.25"/>
+    <rect x="120" y="390" width="200" height="165" rx="62" fill="url(#hood)"/>
+    <circle cx="215" cy="318" r="96" fill="url(#hood)"/>
+    <!-- headband -->
+    <rect x="115" y="266" width="206" height="26" rx="13" fill="url(#band)" transform="rotate(-6 215 279)"/>
+    <circle cx="318" cy="272" r="11" fill="#ec4899"/>
+    <path d="M324,270 q56,-6 96,20 q-48,2 -92,12 z" fill="#f472b6"/>
+    <!-- closed, content eyes -->
+    <path d="M168,316 q18,-20 38,0" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+    <path d="M226,316 q18,-20 38,0" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+    <ellipse cx="158" cy="346" rx="14" ry="9" fill="#f472b6" opacity="0.45"/>
+    <ellipse cx="274" cy="346" rx="14" ry="9" fill="#f472b6" opacity="0.45"/>
+    <!-- arm + tea mug -->
+    <path d="M250,470 q44,6 78,-6" fill="none" stroke="#273449" stroke-width="40" stroke-linecap="round"/>
+    <rect x="300" y="446" width="52" height="46" rx="9" fill="#e2e8f0"/>
+    <ellipse cx="326" cy="448" rx="26" ry="7" fill="#fbbf24"/>
+    <path d="M352,456 q22,2 22,20 q0,16 -22,16" fill="none" stroke="#cbd5e1" stroke-width="7"/>
+    <path d="M316,432 q-8,-12 0,-24 M334,432 q8,-12 0,-24" fill="none" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+    <!-- zzz -->
+    <g fill="#cbd5e1" font-family="DejaVu Sans Mono, monospace" font-weight="bold" opacity="0.9">
+      <text x="92" y="232" font-size="22">z</text>
+      <text x="70" y="206" font-size="30">z</text>
+      <text x="42" y="174" font-size="40">Z</text>
+    </g>
+  </g>
+
+  <!-- accent sparkles -->
+  <g fill="#fde68a">
+    <path d="M620,150 C621.4,156 623,157.6 629,159 C623,160.4 621.4,162 620,168 C618.6,162 617,160.4 611,159 C617,157.6 618.6,156 620,150 Z"/>
+    <path d="M1075,470 C1076.4,476 1078,477.6 1084,479 C1078,480.4 1076.4,482 1075,488 C1073.6,482 1072,480.4 1066,479 C1072,477.6 1073.6,476 1075,470 Z" fill="#67e8f9"/>
+  </g>
+</svg>

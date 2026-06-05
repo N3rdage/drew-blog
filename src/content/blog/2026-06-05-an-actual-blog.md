@@ -3,6 +3,7 @@ title: "Working with agents: The story so far"
 description: "It's not about should I, or how, but when."
 pubDate: "Jun 04 2026"
 heroImage: "../../assets/hero-images/agents-story-hero.png"
+ogImage: "/og/agents-story.png"
 ---
 
 So I am (after this) three blogs deep into my new blog website (a pending TODO since I pulled down my last [BBS](https://en.wikipedia.org/wiki/Bulletin_board_system) in 19.. let's not go there). One thing I would not have expected is that this is the first entry that I have actually written.

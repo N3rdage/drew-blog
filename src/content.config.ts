@@ -17,6 +17,9 @@ const blog = defineCollection({
 			// Alt text for the hero. Omit to default to the title (good for
 			// image SEO); set to "" to mark a purely decorative hero.
 			heroAlt: z.string().optional(),
+			// Pre-generated social card in /public, e.g. "/og/my-post.png".
+			// Generate with: node tools/og-generate.js "Title" "Subtitle" <path>
+			ogImage: z.string().optional(),
 		}),
 });
 

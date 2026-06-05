@@ -3,6 +3,7 @@ title: 'Agentic coding workflows: the context is the codebase'
 description: 'The most valuable artifact in an AI-first project is not the code the agent writes. It is the context you maintain for it.'
 pubDate: 'Jun 04 2026'
 heroImage: '../../assets/hero-images/agentic-coding-hero.png'
+ogImage: '/og/agentic-coding-workflows.png'
 ---
 
 I'm building two projects almost entirely AI-first at the moment, and the thing that has surprised me is not how much code the agent writes. It's where the real work moved to.

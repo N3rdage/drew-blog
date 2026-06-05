@@ -8,11 +8,12 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage, heroAlt } =
+const { title, description, pubDate, updatedDate, heroImage, heroAlt, ogImage } =
 	Astro.props;
 
-// Social cards need a raster image; SVG heroes fall back to the default.
-const ogImage =
+// Social card priority: a pre-generated card (ogImage frontmatter) wins;
+// otherwise fall back to a raster hero (SVG heroes can't be social cards).
+const heroFallback =
 	heroImage && heroImage.format !== 'svg' ? heroImage : undefined;
 ---
 
@@ -21,7 +22,8 @@ const ogImage =
 		<BaseHead
 			title={title}
 			description={description}
-			image={ogImage}
+			image={heroFallback}
+			ogImage={ogImage}
 			pubDate={pubDate}
 			updatedDate={updatedDate}
 			type="article"

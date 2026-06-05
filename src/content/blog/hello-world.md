@@ -3,6 +3,7 @@ title: 'Hello, this is silly.ninja'
 description: 'A quick note on what this site is and what is coming.'
 pubDate: 'Apr 29 2026'
 heroImage: '../../assets/hero-images/hello-world-hero.png'
+ogImage: '/og/hello-world.png'
 ---
 
 This site is a work in progress — but isn't everything.

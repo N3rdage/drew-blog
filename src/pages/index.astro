@@ -3,12 +3,11 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, AUTHOR_NAME, SITE_DESCRIPTION } from '../consts';
-import { getCollection } from 'astro:content';
-import FormattedDate from '../components/FormattedDate.astro';
+import PostList from '../components/PostList.astro';
+import { getAllPosts } from '../lib/posts';
 
-const posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+// Combined firehose: all three streams, reverse-chronological, badged.
+const posts = await getAllPosts();
 ---
 
 <!doctype html>
@@ -48,45 +47,6 @@ const posts = (await getCollection('blog')).sort(
         margin: 0 0 1.25rem;
         color: var(--heading);
       }
-      ul.post-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-      }
-      ul.post-list li a {
-        text-decoration: none;
-        display: block;
-        padding: 1rem 1.25rem;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
-      }
-      ul.post-list li a:hover {
-        border-color: var(--accent);
-        box-shadow: var(--shadow);
-        transform: translateY(-2px);
-      }
-      ul.post-list .post-title {
-        font-size: 1.05rem;
-        font-weight: 600;
-        color: var(--heading);
-        margin: 0 0 0.25rem;
-      }
-      ul.post-list .post-date {
-        font-size: 0.8rem;
-        color: var(--accent-2);
-        margin: 0 0 0.4rem;
-      }
-      ul.post-list .post-desc {
-        font-size: 0.875rem;
-        color: var(--text-muted);
-        margin: 0;
-        line-height: 1.5;
-      }
     </style>
   </head>
   <body>
@@ -102,17 +62,7 @@ const posts = (await getCollection('blog')).sort(
       </div>
 
       <p class="posts-heading">Writing</p>
-      <ul class="post-list">
-        {posts.map((post) => (
-          <li>
-            <a href={`/blog/${post.id}/`}>
-              <p class="post-title">{post.data.title}</p>
-              <p class="post-date"><FormattedDate date={post.data.pubDate} /></p>
-              <p class="post-desc">{post.data.description}</p>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <PostList posts={posts} showBadges={true} />
     </main>
     <Footer />
   </body>

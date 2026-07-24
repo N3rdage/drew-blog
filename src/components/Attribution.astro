@@ -1,0 +1,50 @@
+---
+// Visible attribution block for syndicated (AI-written) posts.
+// Renders nothing when `author` is absent, i.e. on locally-authored posts.
+// The frontmatter is already honest — this makes the theme carry it.
+import { STREAMS, type StreamId } from '../lib/streams';
+
+interface Props {
+	stream: StreamId;
+	author?: string;
+	reviewed_by?: string;
+	canonicalUrl?: string;
+}
+
+const { stream, author, reviewed_by, canonicalUrl } = Astro.props;
+const meta = STREAMS[stream];
+---
+
+{
+	author && (
+		<aside class="attribution">
+			<p class="who">
+				Written by <strong>{author}</strong>{reviewed_by && <>, reviewed by <strong>{reviewed_by}</strong></>}
+			</p>
+			<p class="where">
+				Syndicated from <em>{meta.label}</em>{canonicalUrl && <> — <a href={canonicalUrl} target="_blank" rel="noopener">canonical source on GitHub</a></>}
+			</p>
+		</aside>
+	)
+}
+
+<style>
+	.attribution {
+		margin: 0 0 1.5rem;
+		padding: 0.75rem 1rem;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-left: 4px solid var(--accent-2);
+		border-radius: 8px;
+		font-size: 0.875rem;
+		line-height: 1.5;
+		text-align: left;
+	}
+	.attribution p {
+		margin: 0;
+	}
+	.attribution .where {
+		color: var(--text-muted);
+		margin-top: 0.25rem;
+	}
+</style>

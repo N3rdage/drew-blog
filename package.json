@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "og": "node tools/og-generate.cjs"
+    "og": "node tools/og-generate.cjs",
+    "test": "node --test tools/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.2",
@@ -21,6 +22,7 @@
     "sharp": "^0.34.3"
   },
   "devDependencies": {
-    "@resvg/resvg-js": "^2.6.2"
+    "@resvg/resvg-js": "^2.6.2",
+    "yaml": "2.9.0"
   }
 }

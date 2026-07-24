@@ -3,7 +3,7 @@ export const SITE_TITLE = "silly.ninja";
 // Author identity: used for SEO authorship (JSON-LD Person, author meta).
 export const AUTHOR_NAME = "Andrew O'Hare";
 export const SITE_DESCRIPTION =
-  "Principal Engineer · Solution Architect · SaMD specialist · Agentic coding workflows · Melbourne";
+  "Engineering notes from Melbourne — Drew's posts plus AI-written dev blogs from his agentic side projects.";
 
 export const SOCIAL_LINKS = {
   linkedin: "https://www.linkedin.com/in/drewohare/",

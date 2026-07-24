@@ -1,0 +1,87 @@
+name: Sync syndicated blogs
+
+# Pulls contract-compliant posts from the source repos into the content
+# collections and commits the result — the automation that makes a merge
+# to a source repo appear on silly.ninja with no human action.
+#
+# Triggers:
+#   - repository_dispatch (blog-sync): fired by notify-drew-blog.yml in each
+#     source repo on pushes touching blog/**
+#   - daily cron: fallback if a dispatch is missed (19:00 UTC ≈ 5am Melbourne)
+#   - workflow_dispatch: manual runs
+#
+# The commit is made with the default GITHUB_TOKEN, whose pushes deliberately
+# do NOT trigger other workflows — so this workflow explicitly dispatches
+# deploy.yml afterwards (hence `actions: write`). No extra secrets needed here.
+
+on:
+  repository_dispatch:
+    types: [blog-sync]
+  schedule:
+    - cron: '0 19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: sync-blogs
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout drew-blog
+        uses: actions/checkout@v4
+
+      - name: Checkout the-library (blog only)
+        uses: actions/checkout@v4
+        with:
+          repository: N3rdage/the-library
+          path: .sync/the-library
+          sparse-checkout: blog
+
+      - name: Checkout bonsaiGame (blog only)
+        uses: actions/checkout@v4
+        with:
+          repository: N3rdage/bonsaiGame
+          path: .sync/bonsaiGame
+          sparse-checkout: blog
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run sync tooling tests
+        run: npm test
+
+      - name: Sync posts from source repos
+        run: node tools/sync-blogs.mjs --library .sync/the-library --bonsai .sync/bonsaiGame
+
+      - name: Commit and push if changed
+        id: commit
+        run: |
+          rm -rf .sync
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content/library src/content/bonsai
+          if git diff --cached --quiet; then
+            echo "No changes — already in sync."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Sync syndicated blog posts"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Trigger deploy
+        if: steps.commit.outputs.changed == 'true'
+        run: gh workflow run deploy.yml --ref main
+        env:
+          GH_TOKEN: ${{ github.token }}

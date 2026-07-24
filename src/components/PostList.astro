@@ -1,0 +1,90 @@
+---
+// Post listing shared by the homepage firehose and the per-stream index
+// pages. Styles are lifted verbatim from the original homepage list so the
+// look is unchanged; the optional stream badge is the only addition.
+import FormattedDate from './FormattedDate.astro';
+import StreamBadge from './StreamBadge.astro';
+import type { StreamId } from '../lib/streams';
+
+export interface ListedPost {
+	url: string;
+	title: string;
+	description: string;
+	pubDate: Date;
+	stream: StreamId;
+}
+
+interface Props {
+	posts: ListedPost[];
+	/** Show stream badges (combined listings) or not (single-stream pages). */
+	showBadges?: boolean;
+}
+
+const { posts, showBadges = false } = Astro.props;
+---
+
+<ul class="post-list">
+	{
+		posts.map((post) => (
+			<li>
+				<a href={post.url}>
+					<p class="post-title">{post.title}</p>
+					<p class="post-meta">
+						<span class="post-date">
+							<FormattedDate date={post.pubDate} />
+						</span>
+						{showBadges && <StreamBadge stream={post.stream} />}
+					</p>
+					<p class="post-desc">{post.description}</p>
+				</a>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	ul.post-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+	ul.post-list li a {
+		text-decoration: none;
+		display: block;
+		padding: 1rem 1.25rem;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+	}
+	ul.post-list li a:hover {
+		border-color: var(--accent);
+		box-shadow: var(--shadow);
+		transform: translateY(-2px);
+	}
+	ul.post-list .post-title {
+		font-size: 1.05rem;
+		font-weight: 600;
+		color: var(--heading);
+		margin: 0 0 0.25rem;
+	}
+	ul.post-list .post-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		margin: 0 0 0.4rem;
+	}
+	ul.post-list .post-date {
+		font-size: 0.8rem;
+		color: var(--accent-2);
+	}
+	ul.post-list .post-desc {
+		font-size: 0.875rem;
+		color: var(--text-muted);
+		margin: 0;
+		line-height: 1.5;
+	}
+</style>

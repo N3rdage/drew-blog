@@ -1,0 +1,31 @@
+---
+import { STREAMS, type StreamId } from '../lib/streams';
+
+interface Props {
+	stream: StreamId;
+}
+
+const { stream } = Astro.props;
+const meta = STREAMS[stream];
+---
+
+<span class="stream-badge" style={`--badge-accent: var(${meta.accentVar})`}>
+	{meta.label}
+</span>
+
+<style>
+	.stream-badge {
+		display: inline-block;
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.03em;
+		text-transform: uppercase;
+		color: var(--badge-accent);
+		background: color-mix(in srgb, var(--badge-accent) 12%, transparent);
+		border: 1px solid color-mix(in srgb, var(--badge-accent) 35%, transparent);
+		border-radius: 999px;
+		padding: 0.1rem 0.55rem;
+		line-height: 1.4;
+		white-space: nowrap;
+	}
+</style>

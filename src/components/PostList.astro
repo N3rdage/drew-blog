@@ -26,7 +26,7 @@ const { posts, showBadges = false } = Astro.props;
 <ul class="post-list">
 	{
 		posts.map((post) => (
-			<li>
+			<li data-stream={post.stream}>
 				<a href={post.url}>
 					<p class="post-title">{post.title}</p>
 					<p class="post-meta">

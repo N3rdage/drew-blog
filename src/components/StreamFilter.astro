@@ -1,0 +1,85 @@
+---
+// Filter pills for the homepage firehose. Progressive enhancement:
+// without JS each pill is a plain link to that stream's index page;
+// with JS, clicks filter the post list in place and set a URL hash
+// (silly.ninja/#library is shareable and restored on load).
+import { STREAMS, STREAM_IDS } from '../lib/streams';
+---
+
+<nav class="stream-filter" aria-label="Filter posts by stream">
+	<a href="/" data-filter="all" class="pill active" style="--pill-accent: var(--heading)">All</a>
+	{
+		STREAM_IDS.map((id) => (
+			<a
+				href={`${STREAMS[id].basePath}/`}
+				data-filter={id}
+				class="pill"
+				style={`--pill-accent: var(${STREAMS[id].accentVar})`}
+			>
+				{STREAMS[id].label}
+			</a>
+		))
+	}
+</nav>
+
+<script>
+	const filterNav = document.querySelector('.stream-filter');
+	if (filterNav) {
+		const pills = [...filterNav.querySelectorAll('[data-filter]')] as HTMLElement[];
+		const items = [...document.querySelectorAll('.post-list [data-stream]')] as HTMLElement[];
+
+		const apply = (filter: string) => {
+			for (const pill of pills) {
+				pill.classList.toggle('active', pill.dataset.filter === filter);
+			}
+			for (const item of items) {
+				item.hidden = filter !== 'all' && item.dataset.stream !== filter;
+			}
+		};
+
+		filterNav.addEventListener('click', (event) => {
+			const pill = (event.target as HTMLElement).closest('[data-filter]') as HTMLElement | null;
+			if (!pill) return;
+			event.preventDefault();
+			const filter = pill.dataset.filter ?? 'all';
+			apply(filter);
+			history.replaceState(null, '', filter === 'all' ? location.pathname : `#${filter}`);
+		});
+
+		// Restore a shared/bookmarked filter, e.g. /#library
+		const initial = location.hash.slice(1);
+		if (pills.some((pill) => pill.dataset.filter === initial)) {
+			apply(initial);
+		}
+	}
+</script>
+
+<style>
+	.stream-filter {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: 0 0 1.25rem;
+	}
+	.pill {
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		text-decoration: none;
+		color: var(--pill-accent);
+		background: color-mix(in srgb, var(--pill-accent) 8%, transparent);
+		border: 1px solid color-mix(in srgb, var(--pill-accent) 30%, transparent);
+		border-radius: 999px;
+		padding: 0.3rem 0.9rem;
+		line-height: 1.4;
+		transition: background 0.15s, border-color 0.15s;
+	}
+	.pill:hover {
+		background: color-mix(in srgb, var(--pill-accent) 16%, transparent);
+		border-color: var(--pill-accent);
+	}
+	.pill.active {
+		background: color-mix(in srgb, var(--pill-accent) 20%, transparent);
+		border-color: var(--pill-accent);
+	}
+</style>

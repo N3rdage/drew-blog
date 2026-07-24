@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, AUTHOR_NAME, SITE_DESCRIPTION } from '../consts';
 import PostList from '../components/PostList.astro';
+import StreamFilter from '../components/StreamFilter.astro';
 import { getAllPosts } from '../lib/posts';
 
 // Combined firehose: all three streams, reverse-chronological, badged.
@@ -54,14 +55,15 @@ const posts = await getAllPosts();
     <main>
       <div class="hero">
         <h1>{SITE_TITLE}</h1>
-        <p class="byline">{AUTHOR_NAME} · Principal Engineer</p>
+        <p class="byline">{AUTHOR_NAME}</p>
         <p class="tagline">
-          Solution Architect · SaMD specialist · Melbourne, VIC<br />
-          Writing about engineering, regulated software, and building with AI agents.
+          Engineering notes from Melbourne — mine, plus the dev blogs my AI
+          collaborators write from inside two of my side projects.
         </p>
       </div>
 
       <p class="posts-heading">Writing</p>
+      <StreamFilter />
       <PostList posts={posts} showBadges={true} />
     </main>
     <Footer />
